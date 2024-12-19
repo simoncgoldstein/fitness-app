@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}View Feedback{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Feedback for {{ athlete.user.first_name }}</h1>
+
+    {% for feedback_request in feedback_requests %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Feedback Submitted</h5>
+                <ol>
+                    {% for question in feedback_request.questions.all %}
+                        <li>
+                            <strong>Q:</strong> {{ question.question_text }}
+                            <br>
+                            <strong>A:</strong> {{ question.answer }}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    {% empty %}
+        <p>No feedback submitted yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'coach_dashboard' %}" class="btn btn-dark">Back to Dashboard</a>
+</div>
+{% endblock %}

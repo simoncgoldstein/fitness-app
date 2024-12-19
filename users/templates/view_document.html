@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Support Document{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Support Document for {{ athlete.user.first_name }} ({{ athlete.user.email }})</h1>
+    <hr>
+
+    {% if document %}
+        {% if document.is_csv or document.is_xlsx %}
+            <!-- Display parsed CSV/XLSX data in a table -->
+            <h3>Document Data</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        {% for header in parsed_data.0 %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in parsed_data|slice:"1:" %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <!-- Embed PDF document -->
+            {% if document.document.url %}
+            <embed src="{{ document.document.url }}" width="100%" height="600px" type="application/pdf">
+            {% else %}
+            <p>No document file found.</p>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <p>No document available for this athlete.</p>
+    {% endif %}
+
+    <!-- Button to trigger modal -->
+    <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addVideoModal">Add Video</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addVideoModal" tabindex="-1" aria-labelledby="addVideoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVideoModalLabel">Add Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{% url 'add_video' athlete.id document.id %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="videoTitle" class="form-label">Video Title</label>
+                            <input type="text" class="form-control" id="videoTitle" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="videoDate" class="form-label">Date Posted</label>
+                            <input type="date" class="form-control" id="videoDate" name="date_posted" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="videoUrl" class="form-label">YouTube URL</label>
+                            <input type="url" class="form-control" id="videoUrl" name="url" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video List Section -->
+    <h3 class="mt-5">Videos</h3>
+    {% if document.videos.all %}
+        <ul class="list-group">
+            {% for video in document.videos.all %}
+            <li class="list-group-item">
+                <strong>{{ video.title }}</strong> - {{ video.date_posted }}<br>
+                {% if video.youtube_id %}
+                    <iframe 
+                        width="100%" 
+                        height="500" 
+                        src="https://www.youtube.com/embed/{{ video.youtube_id }}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                {% else %}
+                    <div class="alert alert-warning mt-3">
+                        This video URL is not a valid YouTube link.
+                    </div>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-danger mt-3">
+            No videos have been attached.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

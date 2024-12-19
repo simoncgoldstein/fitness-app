@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Assign Role to {{ user.username }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for="role">Select Role:</label>
+    <select name="role" id="role">
+        <option value="client">Client</option>
+        <option value="coach">Coach</option>
+    </select>
+    <button type="submit">Assign Role</button>
+</form>
+{% endblock %}

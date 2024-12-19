@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Coach Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Success message alert -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Welcome message -->
+    <h1 class="mb-4">Welcome, Coach {{ request.user.first_name }}!</h1>
+
+    <!-- Switch Roles Button -->
+    <div class="mb-4">
+        <a href="{% url 'choose_role' %}" class="btn btn-primary position-relative">
+            Switch Roles
+        </a>
+    </div>
+
+    <!-- Add Athlete Form -->
+    <h2 class="mb-4">Add New Athlete</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Athlete</button>
+    </form>
+
+    <!-- Request Feedback Button -->
+    <div class="mt-4">
+        <a href="{% url 'request_feedback' %}" class="btn btn-primary">Request Feedback</a>
+    </div>
+
+    <!-- Roster Table -->
+    <h2 class="mt-5">Your Athlete Roster</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Client Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Programming Deadline</th>
+                <th scope="col">Files</th>
+                <th scope="col">Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for athlete in roster %}
+                <tr>
+                    <td>{{ athlete.user.first_name }} ({{ athlete.user.username }})</td>
+                    <td>{{ athlete.user.email }}</td>
+                    <td>{{ athlete.programming_deadline }}</td>
+                    <td>
+                        {% if athlete.documents.exists %}
+                            {% for document in athlete.documents.all %}
+                                <a href="{% url 'view_document' athlete.id document.id %}" class="btn btn-primary mb-2">View {{ document.file_title }}</a><br>
+                            {% endfor %}
+                            <hr>
+                        {% endif %}
+                        <a href="{% url 'upload_form' athlete.id %}" class="btn btn-primary">Upload New File</a>
+                    </td>                    
+                    <td>
+                        <a href="{% url 'read_feedback' athlete.id %}" class="btn btn-primary">View Feedback</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No athletes added yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

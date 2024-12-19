@@ -1,0 +1,33 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("", views.home, name='home'),
+    path('faq/', views.faq, name='faq'),
+    path("logout/", views.logout_view, name='logout'),
+    path("coach-dashboard/", views.coach_dashboard, name='coach_dashboard'),
+    path("user-dashboard/", views.user_dashboard, name='user_dashboard'),
+    path("register/client/", views.register_client, name='register_client'),
+    path("register/coach/", views.register_coach, name='register_coach'),
+    path("choose-role/", views.choose_role, name='choose_role'), 
+    path("upload/<int:athlete_id>/", views.upload_form, name='upload_form'),
+    path("athlete/<int:athlete_id>/document/<int:document_id>/", views.view_document, name="view_document"),
+    path("athlete-requests/", views.view_requests, name='athlete_requests'),
+    path("athlete-requests/accept/<int:request_id>", views.accept_athlete_request, name='accept_request'),
+    path("athlete-requests/decline/<int:request_id>", views.decline_athlete_request, name='decline_request'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('redirect-after-login/', views.redirect_after_login, name='redirect_after_login'),
+    path('edit-user/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('assign-role/<int:user_id>/', views.assign_role, name='assign_role'),
+    path('change-role/<int:user_id>/<int:group_id>/', views.change_role, name='change_role'),
+    path('remove-role/<int:user_id>/<int:group_id>/', views.remove_role, name='remove_role'),
+    path('view-files/<int:user_id>/', views.view_files, name='view_files'),
+    path('delete-file/<int:document_id>/', views.delete_file, name='delete_file'),
+    path('remove-user/<int:user_id>/', views.remove_user, name='remove_user'),
+    path('remove-file/<int:file_id>/', views.remove_file, name='remove_file'),
+    path("request-feedback/", views.request_feedback, name="request_feedback"),
+    path('feedback-requests/', views.view_feedback_requests, name='view_feedback_requests'),
+    path('feedback-requests/submit/<int:feedback_request_id>/', views.submit_feedback, name='submit_feedback'),
+    path('athlete/<int:athlete_id>/feedback/', views.read_feedback, name='read_feedback'),
+    path("athlete/<int:athlete_id>/document/<int:document_id>/add-video/", views.add_video, name="add_video"),
+]

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if requests %} 
+    
+    <ul> 
+        {% for request in requests%}
+            <li>
+                {{request.sender.email}} has sent you a request
+                <form action="{% url 'accept_request' request.id%}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Accept Request</button>
+                </form>
+                <form action="{% url 'decline_request' request.id%}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Decline Request</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no pending requests from coaches.</p>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+

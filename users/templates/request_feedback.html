@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Feedback{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Request Feedback</h1>
+    
+    <!-- Display messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Select Client -->
+        <div class="mb-4">
+            <label for="client_id" class="form-label">Select Client</label>
+            <select name="client_id" id="client_id" class="form-select" required>
+                <option value="" selected disabled>-- Select a Client --</option>
+                {% for id, name in clients %}
+                    <option value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <!-- Feedback Questions -->
+        <h3 class="mb-3">Add Feedback Questions</h3>
+        {{ formset.management_form }}
+        <div id="questions-container">
+            {% for form in formset %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <label for="id_{{ form.prefix }}-question_text" class="form-label">Question {{ forloop.counter }}</label>
+                        {{ form.question_text }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Submit Request</button>
+            <a href="{% url 'coach_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

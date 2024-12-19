@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Choose Role{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="container text-center">
+
+         <!--- Welcoming Image --->
+        <img src="{% static 'images/gym_image.png' %}" alt="gym_image" class="img-fluid mb-4" style="width:400px; height:400px; margin-top: 0px; padding: 0px;"/>
+
+        <!-- Personalized Welcome Message at the Top -->
+        <h2 class="mb-4">Welcome to the Fitness Manager, {{ request.user.first_name }} ({{ request.user.email }})!</h2>
+        
+        <!-- Dashboard Choice Heading -->
+        <h3 class="mb-4">Choose Your Dashboard</h3>
+
+        <!-- Display error message alert if necessary -->
+        {% if error_message %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error_message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-center">
+            <!-- Button for User Dashboard -->
+            <a href="{% url 'user_dashboard' %}" class="btn btn-primary rounded-pill mx-2" style="width: 200px;">
+                Go to User Dashboard
+            </a>
+            <!-- Button for Coach Dashboard -->
+            <a href="{% url 'coach_dashboard' %}" class="btn btn-danger rounded-pill mx-2" style="width: 200px;">
+                Go to Coach Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

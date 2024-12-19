@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Frequently Asked Questions</h1>
+    
+    <!-- Overview Section -->
+    <section class="mb-5">
+        <h2>Fitness Manager App</h2>
+        <p>
+            The <strong>Fitness Manager App</strong> is a web application built using <strong>Django</strong> that allows fitness enthusiasts and trainers to manage their clients, workouts, and fitness plans. 
+            The app provides two types of user accounts: <strong>Common Users</strong> and <strong>PMA Administrators</strong>. Each user type has unique permissions and views, enabling administrators to manage the system efficiently, 
+            while users can interact with their fitness schedules and trainers.
+        </p>
+        <h4>Key Features</h4>
+        <ul>
+            <li>Google OAuth login for secure user authentication.</li>
+            <li>Common Users can log in and view their assigned fitness plans.</li>
+            <li>PMA Administrators have full control over user management, including adding/removing users, linking clients to coaches, and more.</li>
+            <li>Separate views and permissions for different user types (Common Users and Admins).</li>
+        </ul>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="mb-5">
+        <h2>Installation Instructions</h2>
+        <p>To set up and run the project locally, follow these steps:</p>
+        <h4>Prerequisites</h4>
+        <ul>
+            <li>Python 3.x</li>
+            <li>Django (specified in <code>requirements.txt</code>)</li>
+            <li>A virtual environment for managing dependencies</li>
+        </ul>
+
+        <h4>Step-by-Step Installation:</h4>
+        <ol>
+            <li><strong>Clone the repository:</strong> <code>git clone <repository_url></code></li>
+            <li><strong>Create and activate a virtual environment:</strong>
+                <ul>
+                    <li>On Windows: <code>python -m venv venv && venv\Scripts\activate</code></li>
+                    <li>On macOS/Linux: <code>python3 -m venv venv && source venv/bin/activate</code></li>
+                </ul>
+            </li>
+            <li><strong>Install dependencies from <code>requirements.txt</code>:</strong> <code>pip install -r requirements.txt</code></li>
+            <li><strong>Run the database migrations:</strong> <code>python manage.py migrate</code></li>
+            <li><strong>Run the development server:</strong> <code>python manage.py runserver</code></li>
+            <li><strong>Access the app:</strong> Open your browser and go to <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>.</li>
+        </ol>
+    </section>
+
+    <!-- Team Section -->
+    <section class="mb-5">
+        <h2>Team Roles</h2>
+        <ul>
+            <li><strong>Youssef Cherrat</strong> (jja3em): Scrum Master</li>
+            <li><strong>Simon</strong>: DevOps Manager</li>
+            <li><strong>Raja</strong>: Testing Manager</li>
+        </ul>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="mb-5">
+        <h2>How It Works</h2>
+        <h4>Common Users:</h4>
+        <p>
+            Users with a Google account can log in, view their fitness schedule, and interact with their assigned coach. The app ensures that users without admin permissions can only access their own data and workout plans.
+        </p>
+        <h4>PMA Administrators:</h4>
+        <p>
+            Admins have additional controls such as adding/removing users and managing the assignment of clients to coaches. When logged in as an admin, the app provides different views to easily manage the backend of the system.
+        </p>
+        <p>
+            Upon login, both user types will see their names and account types printed on the screen, verifying their credentials and access level.
+        </p>
+    </section>
+</div>
+{% endblock %}
